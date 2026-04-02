@@ -74,8 +74,6 @@ export const metricAttributes = (
   attributes: Readonly<Record<string, unknown>>,
 ): ReadonlyArray<[string, string]> => Object.entries(compactMetricAttributes(attributes));
 
-export const withMetricAttributes = Metric.withAttributes;
-
 export const increment = (
   metric: Metric.Metric<number, unknown>,
   attributes: Readonly<Record<string, unknown>>,

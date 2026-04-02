@@ -460,12 +460,12 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
         schema: ProviderInterruptTurnInput,
         payload: rawInput,
       });
+      const routed = yield* resolveRoutableSession({
+        threadId: input.threadId,
+        operation: "ProviderService.interruptTurn",
+        allowRecovery: true,
+      });
       return yield* Effect.gen(function* () {
-        const routed = yield* resolveRoutableSession({
-          threadId: input.threadId,
-          operation: "ProviderService.interruptTurn",
-          allowRecovery: true,
-        });
         yield* Effect.annotateCurrentSpan({
           "provider.operation": "interrupt-turn",
           "provider.kind": routed.adapter.provider,
@@ -479,7 +479,7 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
       }).pipe(
         withMetrics({
           counter: providerTurnsTotal,
-          attributes: providerMetricAttributes("unknown", {
+          attributes: providerMetricAttributes(routed.adapter.provider, {
             operation: "interrupt",
           }),
         }),
@@ -494,12 +494,12 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
         schema: ProviderRespondToRequestInput,
         payload: rawInput,
       });
+      const routed = yield* resolveRoutableSession({
+        threadId: input.threadId,
+        operation: "ProviderService.respondToRequest",
+        allowRecovery: true,
+      });
       return yield* Effect.gen(function* () {
-        const routed = yield* resolveRoutableSession({
-          threadId: input.threadId,
-          operation: "ProviderService.respondToRequest",
-          allowRecovery: true,
-        });
         yield* Effect.annotateCurrentSpan({
           "provider.operation": "respond-to-request",
           "provider.kind": routed.adapter.provider,
@@ -514,7 +514,7 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
       }).pipe(
         withMetrics({
           counter: providerTurnsTotal,
-          attributes: providerMetricAttributes("unknown", {
+          attributes: providerMetricAttributes(routed.adapter.provider, {
             operation: "approval-response",
           }),
         }),
@@ -530,12 +530,12 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
       schema: ProviderRespondToUserInputInput,
       payload: rawInput,
     });
+    const routed = yield* resolveRoutableSession({
+      threadId: input.threadId,
+      operation: "ProviderService.respondToUserInput",
+      allowRecovery: true,
+    });
     return yield* Effect.gen(function* () {
-      const routed = yield* resolveRoutableSession({
-        threadId: input.threadId,
-        operation: "ProviderService.respondToUserInput",
-        allowRecovery: true,
-      });
       yield* Effect.annotateCurrentSpan({
         "provider.operation": "respond-to-user-input",
         "provider.kind": routed.adapter.provider,
@@ -546,7 +546,7 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
     }).pipe(
       withMetrics({
         counter: providerTurnsTotal,
-        attributes: providerMetricAttributes("unknown", {
+        attributes: providerMetricAttributes(routed.adapter.provider, {
           operation: "user-input-response",
         }),
       }),
@@ -560,12 +560,12 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
         schema: ProviderStopSessionInput,
         payload: rawInput,
       });
+      const routed = yield* resolveRoutableSession({
+        threadId: input.threadId,
+        operation: "ProviderService.stopSession",
+        allowRecovery: false,
+      });
       return yield* Effect.gen(function* () {
-        const routed = yield* resolveRoutableSession({
-          threadId: input.threadId,
-          operation: "ProviderService.stopSession",
-          allowRecovery: false,
-        });
         yield* Effect.annotateCurrentSpan({
           "provider.operation": "stop-session",
           "provider.kind": routed.adapter.provider,
@@ -581,7 +581,7 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
       }).pipe(
         withMetrics({
           counter: providerSessionsTotal,
-          attributes: providerMetricAttributes("unknown", {
+          attributes: providerMetricAttributes(routed.adapter.provider, {
             operation: "stop",
           }),
         }),
@@ -651,12 +651,12 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
     if (input.numTurns === 0) {
       return;
     }
+    const routed = yield* resolveRoutableSession({
+      threadId: input.threadId,
+      operation: "ProviderService.rollbackConversation",
+      allowRecovery: true,
+    });
     return yield* Effect.gen(function* () {
-      const routed = yield* resolveRoutableSession({
-        threadId: input.threadId,
-        operation: "ProviderService.rollbackConversation",
-        allowRecovery: true,
-      });
       yield* Effect.annotateCurrentSpan({
         "provider.operation": "rollback-conversation",
         "provider.kind": routed.adapter.provider,
@@ -671,7 +671,7 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
     }).pipe(
       withMetrics({
         counter: providerTurnsTotal,
-        attributes: providerMetricAttributes("unknown", {
+        attributes: providerMetricAttributes(routed.adapter.provider, {
           operation: "rollback",
         }),
       }),
